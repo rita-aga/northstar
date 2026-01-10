@@ -48,7 +48,7 @@ your-project/
 │   ├── templates/
 │   │   └── plan.md                    # Plan template
 │   ├── archive/                       # Completed plans
-│   └── YYYYMMDD_task.md               # Active plans
+│   └── NNN_YYYYMMDD_task.md            # Active plans (NNN = sequence)
 │
 ├── .claude/
 │   ├── commands/

@@ -209,7 +209,7 @@ fi
 echo ""
 echo "Next steps:"
 echo "  1. Test with: /remind"
-echo "  2. Start a task: Create .progress/YYYYMMDD_HHMMSS_task-name.md"
+echo "  2. Start a task: Create .progress/001_YYYYMMDD_HHMMSS_task-name.md"
 if [[ $INSTALL_VISION =~ ^[Yy]$ ]]; then
     echo "  3. Fill in vision docs in .vision/"
 fi

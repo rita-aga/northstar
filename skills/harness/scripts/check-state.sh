@@ -13,7 +13,7 @@ PLAN=$(ls -t "$PROGRESS_DIR"/*.md 2>/dev/null | grep -v archive | grep -v templa
 
 if [ -z "$PLAN" ]; then
     echo "[HARNESS] No active plan found in $PROGRESS_DIR/"
-    echo "[HARNESS] Create a plan before making changes: .progress/YYYYMMDD_HHMMSS_task-name.md"
+    echo "[HARNESS] Create a plan before making changes: .progress/NNN_YYYYMMDD_HHMMSS_task-name.md"
     exit 1
 fi
 

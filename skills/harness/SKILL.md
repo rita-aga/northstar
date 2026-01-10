@@ -32,7 +32,7 @@ GROUNDING → PLANNING → IMPLEMENTING → VERIFYING → COMPLETE
 
 ### On Plan Creation (PLANNING)
 
-1. **Create plan file**: `.progress/YYYYMMDD_HHMMSS_task-name.md`
+1. **Create plan file**: `.progress/NNN_YYYYMMDD_HHMMSS_task-name.md` (NNN = next sequence number)
 2. **Document what vision files were read** (or note none exist)
 3. **Define test requirements** if applicable
 4. **Get approval** (or auto-proceed for small tasks)
