@@ -91,17 +91,26 @@ your-project/
 
 ## Vision Documents (Optional)
 
-The `.vision/` directory contains your project's north star - long-lived documents that guide development:
+The `.vision/` directory contains your project's north star - long-lived documents that guide development.
+
+### Templates Included
+
+| Template | Purpose | Type |
+|----------|---------|------|
+| `NORTHSTAR.md` | The ambitious goal - why this project exists | STABLE |
+| `CONSTRAINTS.md` | Non-negotiable rules and boundaries | STABLE |
+| `ARCHITECTURE.md` | System design, components, decisions | EVOLVING |
+| `UX.md` | Experience principles (CLI, API, or UI) | STABLE |
+
+### Other Common Documents
 
 | Document | When Useful |
 |----------|-------------|
-| `CONSTRAINTS.md` | Non-negotiable rules |
-| `ARCHITECTURE.md` | System design decisions |
-| `PHILOSOPHY.md` | Design principles |
-| `ROADMAP.md` | Project phases |
-| `[custom].md` | Domain-specific guidance |
+| `PHILOSOPHY.md` | Design principles and approach |
+| `ROADMAP.md` | Project phases and milestones |
+| `[domain].md` | Domain-specific guidance |
 
-**Not every project needs all files.** Create what's helpful.
+**Not every project needs all files.** Create what's helpful for your project.
 
 ## Plan Template
 
