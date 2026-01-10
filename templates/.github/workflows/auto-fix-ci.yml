@@ -1,0 +1,93 @@
+name: Auto-Fix CI Failures
+
+on:
+  workflow_run:
+    workflows: ["CI", "Test", "Build", "Claude Code Review"]
+    types: [completed]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  auto-fix:
+    name: Attempt Auto-Fix
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_branch }}
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get failure logs
+        id: logs
+        run: |
+          echo "Fetching logs for workflow run ${{ github.event.workflow_run.id }}..."
+          gh run view ${{ github.event.workflow_run.id }} --log-failed > failure.log 2>&1 || true
+
+          # Also get the workflow run summary
+          gh run view ${{ github.event.workflow_run.id }} > run-summary.txt 2>&1 || true
+
+          echo "Failure log preview:"
+          head -100 failure.log || echo "No failure log available"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check if auto-fix is appropriate
+        id: check
+        run: |
+          # Don't auto-fix main/master branches directly
+          BRANCH="${{ github.event.workflow_run.head_branch }}"
+          if [ "$BRANCH" == "main" ] || [ "$BRANCH" == "master" ]; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+            echo "Skipping auto-fix on protected branch: $BRANCH"
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Claude Auto-Fix
+        if: steps.check.outputs.skip != 'true'
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          claude_args: |
+            --model claude-sonnet-4-20250514
+            --max-turns 20
+          prompt: |
+            ## Auto-Fix CI Failures
+
+            CI failed on branch: ${{ github.event.workflow_run.head_branch }}
+            Workflow: ${{ github.event.workflow_run.name }}
+            Run ID: ${{ github.event.workflow_run.id }}
+
+            The failure logs are in `failure.log` and run summary in `run-summary.txt`.
+
+            Your task:
+            1. Read the failure logs to understand what went wrong
+            2. Identify the root cause
+            3. Fix the issue in the code
+            4. Run tests locally to verify the fix works
+            5. If fix is successful:
+               - Commit with message: "fix: resolve CI failure [auto]"
+               - Push to the branch
+            6. If you cannot fix it automatically:
+               - Create a GitHub issue describing the problem
+               - Include the error message and your analysis
+               - Tag it with "ci-failure" and "needs-human"
+
+            Important rules:
+            - Only fix what's broken, don't refactor unrelated code
+            - Ensure fix doesn't break other tests
+            - If the fix is complex or risky, create an issue instead of pushing
+            - Never force push or modify git history
+
+      - name: Notify if skipped
+        if: steps.check.outputs.skip == 'true'
+        run: |
+          echo "Auto-fix skipped for protected branch ${{ github.event.workflow_run.head_branch }}"
+          echo "Manual intervention required."

@@ -1,0 +1,60 @@
+# Northstar Development Workflow
+
+## Vision-Aligned Planning (MANDATORY)
+
+**STOP. Before starting ANY non-trivial task (3+ steps, multi-file, or research required), you MUST:**
+
+### Before Starting - DO THIS FIRST
+
+1. **Check for `.vision/`** - If exists, READ whatever vision files are there
+2. **Check for `.progress/`** - Read existing plans to understand current state
+3. **Create timestamped plan** - ALWAYS save to `.progress/YYYYMMDD_HHMMSS_task-name.md` BEFORE writing code
+4. **If no `.vision/` exists** - That's fine for small tasks, or offer to create relevant docs
+
+**DO NOT skip planning. DO NOT start coding without a plan file.**
+
+### During Execution
+
+1. **Update plan after each phase** - Mark phases complete, log findings
+2. **Re-read plan before major decisions** - Keeps goals in attention window
+3. **Document deviations** - If implementation differs from plan, note why
+4. **The 2-Action Rule** - After every 2 significant operations, save key findings to plan file
+
+### Before Completion
+
+1. **Run `/no-cap`** - Verify no hacks, placeholders, or incomplete code
+2. **Check vision alignment** - Does result match vision constraints?
+3. **Update plan status** - Mark as complete with verification status
+4. **Commit and push** (see Git Workflow below)
+
+### Testing (Default Behavior)
+
+- **Write tests for new code** - Any new feature or bug fix should have tests
+- **Run tests before pushing** - Never push without running tests locally
+- **If tests fail, fix before pushing** - Don't rely on CI to catch issues
+
+### Multi-Instance Coordination
+
+When multiple Claude instances work on shared tasks:
+- Read `.progress/` plans before starting work
+- Claim phases in the Instance Log section
+- Update status frequently to avoid conflicts
+- Use findings section for shared discoveries
+
+## Git Workflow
+
+When working on a task that involves planning followed by implementation:
+
+1. **After implementing planned changes**, always commit with a clear, descriptive message
+2. **Always push** to the current branch after committing
+3. Use conventional commit format:
+   - `feat:` for new features
+   - `fix:` for bug fixes
+   - `refactor:` for code refactoring
+   - `docs:` for documentation changes
+   - `chore:` for maintenance tasks
+
+## Commands
+
+- `/remind` - Show workflow checklist
+- `/no-cap` - Verify implementation quality
