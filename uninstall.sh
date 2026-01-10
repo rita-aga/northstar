@@ -47,10 +47,14 @@ if [ -f "$TARGET/.claude/hooks/pre-push-review.sh" ]; then
     echo "  ✓ Removed pre-push-review.sh"
 fi
 
-# Remove command
+# Remove commands
 if [ -f "$TARGET/.claude/commands/remind.md" ]; then
     rm "$TARGET/.claude/commands/remind.md"
     echo "  ✓ Removed remind.md"
+fi
+if [ -f "$TARGET/.claude/commands/no-cap.md" ]; then
+    rm "$TARGET/.claude/commands/no-cap.md"
+    echo "  ✓ Removed no-cap.md"
 fi
 
 # Remove plan template (keep existing plans)

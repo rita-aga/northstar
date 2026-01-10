@@ -38,10 +38,11 @@ echo "[2/6] Installing plan template..."
 cp "$SCRIPT_DIR/templates/.progress/templates/plan.md" "$TARGET/.progress/templates/"
 echo "  ✓ Plan template installed"
 
-# Copy command
-echo "[3/6] Installing /remind command..."
+# Copy commands
+echo "[3/6] Installing commands..."
 cp "$SCRIPT_DIR/templates/.claude/commands/remind.md" "$TARGET/.claude/commands/"
-echo "  ✓ /remind command installed"
+cp "$SCRIPT_DIR/templates/.claude/commands/no-cap.md" "$TARGET/.claude/commands/"
+echo "  ✓ /remind and /no-cap commands installed"
 
 # Copy hooks
 echo "[4/6] Installing hooks..."
@@ -107,6 +108,7 @@ echo ""
 echo "What's installed:"
 echo "  .progress/templates/plan.md    - Task plan template"
 echo "  .claude/commands/remind.md     - /remind command"
+echo "  .claude/commands/no-cap.md     - /no-cap verification command"
 echo "  .claude/hooks/*.sh             - Pre-commit and reminder hooks"
 echo "  .claude/settings.json          - Hook configuration"
 if [[ $INSTALL_CI =~ ^[Yy]$ ]]; then

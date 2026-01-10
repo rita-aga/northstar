@@ -50,7 +50,8 @@ your-project/
 │   └── YYYYMMDD_task.md      # Active plans
 ├── .claude/
 │   ├── commands/
-│   │   └── remind.md         # /remind command
+│   │   ├── remind.md         # /remind command
+│   │   └── no-cap.md         # /no-cap verification
 │   ├── hooks/
 │   │   ├── check-plan-reminder.sh
 │   │   ├── pre-commit.sh
