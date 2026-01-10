@@ -133,6 +133,28 @@ For smaller decisions that don't need full analysis:
 
 ---
 
+## What to Try (REQUIRED after each iteration)
+
+*Update this section after completing each phase or iteration. Be specific about what the user can actually try out.*
+
+### Works Now
+| What | How to Try |
+|------|------------|
+| [Feature/capability] | [Exact steps to try it] |
+| | |
+
+### Doesn't Work Yet
+| What | Why | When Expected |
+|------|-----|---------------|
+| [Feature/capability] | [Missing piece or dependency] | [Phase or condition] |
+| | | |
+
+### Known Limitations
+- [Things that work but with caveats]
+- [Edge cases not handled]
+
+---
+
 ## Completion Notes
 
 **Verification Status:**
@@ -142,6 +164,9 @@ For smaller decisions that don't need full analysis:
 
 **Decisions summary:**
 - [List key decisions made and their outcomes]
+
+**What to Try (Final):**
+- [Summary of what the user can now test/use]
 
 **Commit:** [hash]
 **PR:** [link if applicable]
