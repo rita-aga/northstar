@@ -98,6 +98,7 @@ The `.vision/` directory contains your project's north star - long-lived documen
 | Template | Purpose | Type |
 |----------|---------|------|
 | `NORTHSTAR.md` | The ambitious goal - why this project exists | STABLE |
+| `PHILOSOPHY.md` | Core beliefs and how we make decisions | STABLE |
 | `CONSTRAINTS.md` | Non-negotiable rules and boundaries | STABLE |
 | `ARCHITECTURE.md` | System design, components, decisions | EVOLVING |
 | `UX.md` | Experience principles (CLI, API, or UI) | STABLE |
@@ -106,7 +107,6 @@ The `.vision/` directory contains your project's north star - long-lived documen
 
 | Document | When Useful |
 |----------|-------------|
-| `PHILOSOPHY.md` | Design principles and approach |
 | `ROADMAP.md` | Project phases and milestones |
 | `[domain].md` | Domain-specific guidance |
 
