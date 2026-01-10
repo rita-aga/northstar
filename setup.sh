@@ -26,7 +26,7 @@ echo "Target: $TARGET"
 echo ""
 
 # Create directories
-echo "[1/7] Creating directories..."
+echo "[1/8] Creating directories..."
 mkdir -p "$TARGET/.progress/templates"
 mkdir -p "$TARGET/.progress/archive"
 mkdir -p "$TARGET/.claude/commands"
@@ -34,18 +34,18 @@ mkdir -p "$TARGET/.claude/hooks"
 echo "  ✓ Directories created"
 
 # Copy plan template
-echo "[2/7] Installing plan template..."
+echo "[2/8] Installing plan template..."
 cp "$SCRIPT_DIR/templates/.progress/templates/plan.md" "$TARGET/.progress/templates/"
 echo "  ✓ Plan template installed"
 
 # Copy commands
-echo "[3/7] Installing commands..."
+echo "[3/8] Installing commands..."
 cp "$SCRIPT_DIR/templates/.claude/commands/remind.md" "$TARGET/.claude/commands/"
 cp "$SCRIPT_DIR/templates/.claude/commands/no-cap.md" "$TARGET/.claude/commands/"
 echo "  ✓ /remind and /no-cap commands installed"
 
 # Copy hooks
-echo "[4/7] Installing hooks..."
+echo "[4/8] Installing hooks..."
 cp "$SCRIPT_DIR/templates/.claude/hooks/check-plan-reminder.sh" "$TARGET/.claude/hooks/"
 cp "$SCRIPT_DIR/templates/.claude/hooks/pre-commit.sh" "$TARGET/.claude/hooks/"
 cp "$SCRIPT_DIR/templates/.claude/hooks/pre-push-review.sh" "$TARGET/.claude/hooks/"
@@ -53,7 +53,7 @@ chmod +x "$TARGET/.claude/hooks/"*.sh
 echo "  ✓ Hooks installed"
 
 # Handle settings.json
-echo "[5/7] Configuring hooks..."
+echo "[5/8] Configuring hooks..."
 if [ -f "$TARGET/.claude/settings.json" ]; then
     echo "  ⚠️  .claude/settings.json exists"
     echo "  Manual merge may be needed. Reference:"
@@ -63,8 +63,30 @@ else
     echo "  ✓ Hook configuration installed"
 fi
 
+# Add workflow instructions to CLAUDE.md
+echo "[6/8] Adding workflow to CLAUDE.md..."
+if [ -f "$TARGET/CLAUDE.md" ]; then
+    # Check if workflow section already exists
+    if grep -q "Development Workflow (Northstar)" "$TARGET/CLAUDE.md"; then
+        echo "  ⚠️  Workflow section already exists in CLAUDE.md"
+    else
+        # Append the snippet
+        echo "" >> "$TARGET/CLAUDE.md"
+        cat "$SCRIPT_DIR/global/CLAUDE.md.snippet" >> "$TARGET/CLAUDE.md"
+        echo "  ✓ Workflow instructions added to CLAUDE.md"
+    fi
+else
+    # Create CLAUDE.md with snippet
+    echo "# CLAUDE.md" > "$TARGET/CLAUDE.md"
+    echo "" >> "$TARGET/CLAUDE.md"
+    echo "This file provides guidance to Claude Code when working with this repository." >> "$TARGET/CLAUDE.md"
+    echo "" >> "$TARGET/CLAUDE.md"
+    cat "$SCRIPT_DIR/global/CLAUDE.md.snippet" >> "$TARGET/CLAUDE.md"
+    echo "  ✓ CLAUDE.md created with workflow instructions"
+fi
+
 # Vision directory
-echo "[6/7] Vision documents..."
+echo "[7/8] Vision documents..."
 read -p "  Create .vision/ with templates? (y/n) " -n 1 -r INSTALL_VISION
 echo ""
 if [[ $INSTALL_VISION =~ ^[Yy]$ ]]; then
@@ -78,7 +100,7 @@ if [[ $INSTALL_VISION =~ ^[Yy]$ ]]; then
 fi
 
 # GitHub Integration
-echo "[7/7] GitHub integration..."
+echo "[8/8] GitHub integration..."
 echo ""
 
 # CI Workflows - Language Selection
