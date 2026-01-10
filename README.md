@@ -10,6 +10,7 @@ Northstar helps development agents (Claude, etc.) stay focused and build iterati
 - **Track progress** - State machine workflow prevents rushing
 - **Verify quality** - Hooks check for placeholders, missing tests, debug statements
 - **Auto-fix CI failures** - GitHub Action attempts to fix failing CI automatically
+- **Security scanning** - CodeQL SAST and Dependabot dependency updates
 
 ## Quick Start
 
@@ -45,23 +46,40 @@ After installation, your project will have:
 your-project/
 ├── .progress/
 │   ├── templates/
-│   │   └── plan.md           # Plan template
-│   ├── archive/              # Completed plans
-│   └── YYYYMMDD_task.md      # Active plans
+│   │   └── plan.md                    # Plan template
+│   ├── archive/                       # Completed plans
+│   └── YYYYMMDD_task.md               # Active plans
+│
 ├── .claude/
 │   ├── commands/
-│   │   ├── remind.md         # /remind command
-│   │   └── no-cap.md         # /no-cap verification
+│   │   ├── remind.md                  # /remind command
+│   │   └── no-cap.md                  # /no-cap verification
 │   ├── hooks/
 │   │   ├── check-plan-reminder.sh
 │   │   ├── pre-commit.sh
 │   │   └── pre-push-review.sh
-│   └── settings.json         # Hook configuration
-├── .vision/                  # Optional - your north star
-│   └── CONSTRAINTS.md        # Project constraints
-└── .github/workflows/        # Optional - CI integration
-    ├── review.yml            # Claude code review
-    └── auto-fix-ci.yml       # Auto-fix failures
+│   └── settings.json                  # Hook configuration
+│
+├── .vision/                           # Optional - your north star
+│   ├── NORTHSTAR.md                   # The ambitious goal
+│   ├── PHILOSOPHY.md                  # Core beliefs
+│   ├── CONSTRAINTS.md                 # Non-negotiables
+│   ├── ARCHITECTURE.md                # System design
+│   └── UX.md                          # Experience principles
+│
+└── .github/                           # Optional - CI integration
+    ├── dependabot.yml                 # Dependency updates
+    ├── PULL_REQUEST_TEMPLATE.md       # PR template
+    ├── ISSUE_TEMPLATE/                # Issue templates
+    │   ├── bug_report.yml
+    │   ├── feature_request.yml
+    │   └── config.yml
+    └── workflows/
+        ├── ci.yml                     # Lint/test/build
+        ├── review.yml                 # Claude code review
+        ├── auto-fix-ci.yml            # Auto-fix failures
+        ├── codeql.yml                 # Security scanning
+        └── dependabot-auto-merge.yml  # Auto-merge safe updates
 ```
 
 ## Commands
@@ -80,6 +98,7 @@ your-project/
 | No placeholders left | /no-cap verification |
 | Vision alignment | Read whatever vision docs exist |
 | Quality over speed | State machine prevents rushing |
+| Security by default | CodeQL scanning, Dependabot updates |
 
 ## What Northstar Does NOT Prescribe
 
@@ -123,16 +142,28 @@ Plans include:
 - **Checkpoints** - Gates before completion
 - **Test Requirements** - What to test
 
-## CI Integration
+## CI Workflows
 
-### Code Review (review.yml)
+Northstar includes a comprehensive set of CI/CD workflows.
 
-Triggered on PR:
-- Runs tests and typecheck
-- Claude reviews code for quality, security, test coverage
-- Flags issues as CRITICAL, WARNING, or SUGGESTION
+### Core CI (ci.yml)
 
-### Auto-Fix (auto-fix-ci.yml)
+Language-agnostic lint/test/build workflow:
+- Auto-detects Node.js, Python, Go, Rust
+- Runs lint, test, and build in parallel
+- Triggers on push to main and PRs
+
+### Claude Code Review (review.yml)
+
+AI-powered code review on PRs:
+- Reviews for bugs, security, and quality
+- Checks vision alignment (reads `.vision/CONSTRAINTS.md`)
+- Flags missing tests
+- Detects placeholders (TODO, FIXME, HACK)
+
+**Required GitHub Secret:** `ANTHROPIC_API_KEY`
+
+### Auto-Fix CI Failures (auto-fix-ci.yml)
 
 Triggered when CI fails:
 - Fetches failure logs
@@ -141,6 +172,34 @@ Triggered when CI fails:
 - If unfixable, creates GitHub issue
 
 **Required GitHub Secret:** `ANTHROPIC_API_KEY`
+
+### CodeQL Security Scanning (codeql.yml)
+
+Static Application Security Testing (SAST):
+- Scans for vulnerabilities (SQL injection, XSS, etc.)
+- Runs on push, PRs, and weekly schedule
+- Supports JavaScript, Python, Go, Java, C#, C++, Ruby, Swift
+
+### Dependabot (dependabot.yml)
+
+Automated dependency updates:
+- Updates GitHub Actions weekly
+- Template includes npm, pip, go, cargo, docker (uncomment as needed)
+- Groups minor/patch updates to reduce PR noise
+
+### Dependabot Auto-Merge (dependabot-auto-merge.yml)
+
+Safely auto-merge dependency updates:
+- Auto-merges patch updates (bug fixes, security patches)
+- Only merges after all CI checks pass
+- Minor/major updates require manual review
+
+## PR & Issue Templates
+
+Standardized templates for consistency:
+- **PR Template**: Summary, changes, type of change, testing checklist
+- **Bug Report**: Description, expected behavior, steps to reproduce, environment
+- **Feature Request**: Problem, proposed solution, alternatives, priority
 
 ## Global Claude Instructions
 
