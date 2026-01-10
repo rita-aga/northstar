@@ -81,13 +81,39 @@ fi
 echo "[7/7] GitHub integration..."
 echo ""
 
-# CI Workflows
-read -p "  Install CI workflows (lint/test/build)? (y/n) " -n 1 -r INSTALL_CI
+# CI Workflows - Language Selection
+echo "  Install CI workflow (lint/test/build)?"
+echo "    1) Node.js / TypeScript (Bun)"
+echo "    2) Python"
+echo "    3) Go"
+echo "    4) Rust"
+echo "    5) Skip"
+read -p "  Select [1-5]: " -n 1 -r CI_LANG
 echo ""
-if [[ $INSTALL_CI =~ ^[Yy]$ ]]; then
+
+CI_INSTALLED=""
+if [[ $CI_LANG == "1" ]]; then
     mkdir -p "$TARGET/.github/workflows"
-    cp "$SCRIPT_DIR/templates/.github/workflows/ci.yml" "$TARGET/.github/workflows/"
-    echo "  ✓ CI workflow installed (ci.yml)"
+    cp "$SCRIPT_DIR/templates/.github/workflows/ci-node.yml" "$TARGET/.github/workflows/ci.yml"
+    CI_INSTALLED="Node.js"
+    echo "  ✓ Node.js CI workflow installed"
+elif [[ $CI_LANG == "2" ]]; then
+    mkdir -p "$TARGET/.github/workflows"
+    cp "$SCRIPT_DIR/templates/.github/workflows/ci-python.yml" "$TARGET/.github/workflows/ci.yml"
+    CI_INSTALLED="Python"
+    echo "  ✓ Python CI workflow installed"
+elif [[ $CI_LANG == "3" ]]; then
+    mkdir -p "$TARGET/.github/workflows"
+    cp "$SCRIPT_DIR/templates/.github/workflows/ci-go.yml" "$TARGET/.github/workflows/ci.yml"
+    CI_INSTALLED="Go"
+    echo "  ✓ Go CI workflow installed"
+elif [[ $CI_LANG == "4" ]]; then
+    mkdir -p "$TARGET/.github/workflows"
+    cp "$SCRIPT_DIR/templates/.github/workflows/ci-rust.yml" "$TARGET/.github/workflows/ci.yml"
+    CI_INSTALLED="Rust"
+    echo "  ✓ Rust CI workflow installed"
+else
+    echo "  Skipped CI workflow"
 fi
 
 # Claude Review & Auto-fix
@@ -159,8 +185,8 @@ echo "  .claude/settings.json          - Hook configuration"
 if [[ $INSTALL_VISION =~ ^[Yy]$ ]]; then
     echo "  .vision/*.md                   - Vision document templates"
 fi
-if [[ $INSTALL_CI =~ ^[Yy]$ ]]; then
-    echo "  .github/workflows/ci.yml       - Lint/test/build workflow"
+if [[ -n $CI_INSTALLED ]]; then
+    echo "  .github/workflows/ci.yml       - $CI_INSTALLED CI workflow"
 fi
 if [[ $INSTALL_REVIEW =~ ^[Yy]$ ]]; then
     echo "  .github/workflows/review.yml   - Claude code review"

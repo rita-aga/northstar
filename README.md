@@ -148,10 +148,20 @@ Northstar includes a comprehensive set of CI/CD workflows.
 
 ### Core CI (ci.yml)
 
-Language-agnostic lint/test/build workflow:
-- Auto-detects Node.js, Python, Go, Rust
-- Runs lint, test, and build in parallel
-- Triggers on push to main and PRs
+Language-specific lint/test/build workflows. During setup, you choose your language:
+
+| Language | Linter | Tests | Build |
+|----------|--------|-------|-------|
+| **Node.js** | `bun run lint` | `bun test` | `bun run build` |
+| **Python** | `ruff check/format` | `pytest --cov` | - |
+| **Go** | `golangci-lint` | `go test -race` | `go build` |
+| **Rust** | `cargo fmt/clippy` | `cargo test` | `cargo build --release` |
+
+All workflows:
+- Run lint and test in parallel
+- Build only after lint and test pass
+- Use concurrency groups to cancel redundant runs
+- Trigger on push to main and PRs
 
 ### Claude Code Review (review.yml)
 
