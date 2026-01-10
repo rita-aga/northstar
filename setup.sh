@@ -96,7 +96,8 @@ if [[ $INSTALL_VISION =~ ^[Yy]$ ]]; then
     cp "$SCRIPT_DIR/templates/.vision/PHILOSOPHY.md" "$TARGET/.vision/"
     cp "$SCRIPT_DIR/templates/.vision/ARCHITECTURE.md" "$TARGET/.vision/"
     cp "$SCRIPT_DIR/templates/.vision/UX.md" "$TARGET/.vision/"
-    echo "  ✓ .vision/ created with all templates"
+    cp "$SCRIPT_DIR/templates/.vision/STYLING.md" "$TARGET/.vision/"
+    echo "  ✓ .vision/ created with all templates (including STYLING.md)"
 fi
 
 # GitHub Integration
