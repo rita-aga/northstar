@@ -94,11 +94,27 @@ your-project/
 
 | Outcome | How |
 |---------|-----|
+| **Simulation-first development** | Full system tested through DST harness with fault injection (see below) |
 | Decisions are traceable | Decision log in plan |
 | No placeholders left | /no-cap verification |
 | Vision alignment | Read whatever vision docs exist |
 | Quality over speed | State machine prevents rushing |
 | Security by default | CodeQL scanning, Dependabot updates |
+
+### Simulation-First Development
+
+**What it means:** Every feature must be tested through a deterministic simulation harness that can inject faults (network failures, timeouts, crashes) and run stress tests. This is **mandatory** and distinct from regular testing.
+
+**What it is NOT:** Unit tests, mocks, or integration tests alone. These are valuable supplements but do not satisfy the simulation-first requirement.
+
+**The workflow:**
+1. Check if harness supports needed fault types → extend harness if not
+2. Write simulation test with fault injection
+3. Implement the feature
+4. Run simulation, find bugs
+5. Fix and verify determinism (same seed = same behavior)
+
+See `.vision/CONSTRAINTS.md` for the complete definition and enforcement checklist.
 
 ## What Northstar Does NOT Prescribe
 
